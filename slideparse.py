@@ -1,4 +1,13 @@
 #!/usr/bin/python
+
+# 
+#  slideparse.py
+#  «slide donwloader»
+#  
+#  Created by zhili hu on 2010-09-28.
+#  Copyright 2010 . All rights reserved.
+#  huzhili@gmail.com
+
 import sys
 import urllib
 from sgmllib import SGMLParser
