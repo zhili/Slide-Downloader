@@ -2,7 +2,7 @@
 
 # 
 #  slideparse.py
-#  «slide donwloader»
+#  <slide donwloader>
 #  
 #  Created by zhili hu on 2010-09-28.
 #  Copyright 2010 . All rights reserved.
@@ -20,7 +20,8 @@ from reportlab.lib.pagesizes import portrait,A4
 import urllib2
 import re
 import zlib
-
+from reportlab.lib.utils import ImageReader
+from PIL import Image
 
 def parseDocFileNameFromSlideshare(fileurl='http://www.slideshare.net/sonia_ai/facebook-twitter-email'): 
 	docName = ''
@@ -266,36 +267,42 @@ def convertImageToPDF(_fileName, _swfslides, isDocin):
 				for pagenr in range(1,doc.pages+1): 
 					page1 = doc.getPage(pagenr) 
 					print "Page", pagenr, "has dimensions", page1.width, "x", page1.height
-					pdfCanvas.setPageSize((page1.width, page1.height))
+					pdfCanvas.setPageSize((page1.width*2, page1.height*2))
 					imageName = 'image-%s-%s.png'%(numberOfSlides, pagenr)
-					img = gfx.ImageList()
-					img.setparameter("antialise", "4") # turn on antialisin
+					imgRGBBuf = page1.asImage(page1.width*2, page1.height*2)
+					im = Image.fromstring("RGB", (page1.width*2,page1.height*2), imgRGBBuf) # convert to PIL Object
+					# img = gfx.ImageList()
+					# 				img.setparameter("antialise", "4") # turn on antialisin
 					# img.setparameter("zoom", "100")
-					img.startpage(page1.width,page1.height) 
-					page1.render(img)
-					img.endpage()
+					# img.startpage(page1.width,page1.height) 
+					# 				page1.render(img)
+					# 				img.endpage()
 					# pageNumOfThisSwf+=1"thumbnail%s.png" % pagenr
-					img.save(imageName)
-					pdfCanvas.drawImage(imageName,0,0,width= page1.width,height= page1.height,mask='auto') 
+					# img.save(imageName)
+					# pdfCanvas.drawImage(imageName,0,0,width= page1.width,height= page1.height,mask='auto') 
+					pdfCanvas.drawImage(ImageReader(im),0,0,width=page1.width*2,height=page1.height*2,mask='auto') 
 					pdfCanvas.showPage()
-					os.remove(imageName) # delete temp image
+					# os.remove(imageName) # delete temp image
 			else:
 				# damn docins bad header.
 				page1 = doc.getPage(1) 
 				print "Page %d" % numberOfSlides, "has dimensions", page1.width, "x", page1.height
-				pdfCanvas.setPageSize((page1.width, page1.height))
+				pdfCanvas.setPageSize((page1.width*2, page1.height*2))
 				imageName = 'image-%s-%s.png'%(numberOfSlides, 1)
-				img = gfx.ImageList()
-				img.setparameter("antialise", "4") # turn on antialisin
+				imgRGBBuf = page1.asImage(page1.width*2, page1.height*2)
+				im = Image.fromstring("RGB", (page1.width*2,page1.height*2), imgRGBBuf) # convert to PIL Object
+				# img = gfx.ImageList()
+				# img.setparameter("antialise", "4") # turn on antialisin
 				# img.setparameter("zoom", "100")
-				img.startpage(page1.width,page1.height) 
-				page1.render(img)
-				img.endpage()
+				# img.startpage(page1.width,page1.height) 
+				# page1.render(img)
+				# img.endpage()
 				# pageNumOfThisSwf+=1"thumbnail%s.png" % pagenr
-				img.save(imageName)
-				pdfCanvas.drawImage(imageName,0,0,width= page1.width,height= page1.height,mask='auto') 
+				# img.save(imageName)
+				# pdfCanvas.drawImage(imageName,0,0,width= page1.width,height= page1.height,mask='auto') 
+				pdfCanvas.drawImage(ImageReader(im),0,0,width=page1.width*2,height=page1.height*2,mask='auto') 
 				pdfCanvas.showPage()
-				os.remove(imageName) # delete temp image
+				# os.remove(imageName) # delete temp image
 		numberOfSlides += 1
 		os.remove(iswf) # delete temp swf
 	pdfCanvas.save()
