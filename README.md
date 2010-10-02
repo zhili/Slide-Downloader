@@ -7,8 +7,8 @@
 降低，但是应该不会影响阅读。还有就是文档比较大。支持baidu，
 docin和slideshare三个网站.
 需要安装:
-    1.swftools
-    2.PIL
-    3.Reportlab
+    1.[swftools](http://www.swftools.org/download.html)
+    2.[PIL](http://www.pythonware.com/products/pil/)
+    3.[Reportlab](http://pypi.python.org/pypi/reportlab)
 系统：
     linux等和装有python的Windows
